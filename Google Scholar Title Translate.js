@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Scholar标题翻译（有道 & Google 选择）
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  将Google Scholar搜索结果标题翻译为中文，并在英文标题上一行显示（可选择使用有道或Google翻译）
 // @author       Pencilheart
 // @match        https://scholar.google.com/*
@@ -11,6 +11,7 @@
 // @grant        GM_setValue
 // @connect      dict.youdao.com
 // @connect      translate.googleapis.com
+// @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBmaWxsPSJyZWQiIGQ9Ik0xMiAyMS4zNWwtMS40NS0xLjMyQzUuNCAxNS4zNiAyIDEyLjI4IDIgOC41IDIgNS40MiA0LjQyIDMgNy41IDNjMS43NCAwIDMuNDEuODEgNC41IDIuMDlDMTMuMDkgMy44MSAxNC43NiAzIDE2LjUgMyAxOS41OCAzIDIyIDUuNDIgMjIgOC41YzAgMy43OC0zLjQgNi44Ni04LjU1IDExLjU0TDEyIDIxLjM1eiIvPjwvc3ZnPg==
 // ==/UserScript==
 
 (function() {
