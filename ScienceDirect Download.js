@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         下载ScienceDirect
 // @namespace    https://www.sciencedirect.com/
-// @version      1.0
+// @version      1.1
 // @description  根据URL判断是否需要去掉参数并添加下载链接,延时自动关闭
 // @author       Pencilheart
 // @match        https://www.sciencedirect.com/science/article/pii/*
+// @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBmaWxsPSJyZWQiIGQ9Ik0xMiAyMS4zNWwtMS40NS0xLjMyQzUuNCAxNS4zNiAyIDEyLjI4IDIgOC41IDIgNS40MiA0LjQyIDMgNy41IDNjMS43NCAwIDMuNDEuODEgNC41IDIuMDlDMTMuMDkgMy44MSAxNC43NiAzIDE2LjUgMyAxOS41OCAzIDIyIDUuNDIgMjIgOC41YzAgMy43OC0zLjQgNi44Ni04LjU1IDExLjU0TDEyIDIxLjM1eiIvPjwvc3ZnPg==
 // @grant        none
 // ==/UserScript==
 
