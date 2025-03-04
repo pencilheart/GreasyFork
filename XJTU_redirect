@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动打开PDF,否则重定向至XJTU_VPN
-// @version      1.0
+// @version      1.1
 // @author       Pencilheart
 // @description  自动打开PDF，如果没有找到PDF链接则重定向到西安交通大学图书馆。
 // @match        https://webvpn.xjtu.edu.cn/https/77726476706e69737468656265737421e7e056d234336155700b8ca891472636a6d29e640e/science/article/pii/*
