@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         自动打开PDF,否则重定向至XJTU_VPN(停用)
+// @name         自动打开PDF,否则重定向至XJTU_VPN
 // @version      1.0
 // @author       Pencilheart
 // @description  自动打开PDF，如果没有找到PDF链接则重定向到西安交通大学图书馆。
