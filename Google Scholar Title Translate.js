@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Scholar标题翻译（有道 & Google 选择）
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  将Google Scholar搜索结果标题翻译为中文，并在英文标题上一行显示（可选择使用有道或Google翻译）
 // @author       Pencilheart
 // @match        https://scholar.google.com/*
@@ -12,6 +12,8 @@
 // @connect      dict.youdao.com
 // @connect      translate.googleapis.com
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBmaWxsPSJyZWQiIGQ9Ik0xMiAyMS4zNWwtMS40NS0xLjMyQzUuNCAxNS4zNiAyIDEyLjI4IDIgOC41IDIgNS40MiA0LjQyIDMgNy41IDNjMS43NCAwIDMuNDEuODEgNC41IDIuMDlDMTMuMDkgMy44MSAxNC43NiAzIDE2LjUgMyAxOS41OCAzIDIyIDUuNDIgMjIgOC41YzAgMy43OC0zLjQgNi44Ni04LjU1IDExLjU0TDEyIDIxLjM1eiIvPjwvc3ZnPg==
+// @downloadURL https://update.greasyfork.org/scripts/528747/Google%20Scholar%E6%A0%87%E9%A2%98%E7%BF%BB%E8%AF%91%EF%BC%88%E6%9C%89%E9%81%93%20%20Google%20%E9%80%89%E6%8B%A9%EF%BC%89.user.js
+// @updateURL https://update.greasyfork.org/scripts/528747/Google%20Scholar%E6%A0%87%E9%A2%98%E7%BF%BB%E8%AF%91%EF%BC%88%E6%9C%89%E9%81%93%20%20Google%20%E9%80%89%E6%8B%A9%EF%BC%89.meta.js
 // ==/UserScript==
 
 (function() {
@@ -45,21 +47,24 @@
 
             setTimeout(() => {
                 translateText(originalTitle, GM_getValue('translationService', 'youdao'), (translatedText) => {
-                    const translatedElement = document.createElement('p');
-                    translatedElement.style.fontFamily = getComputedStyle(titleLink).fontFamily;
-                    translatedElement.style.fontSize = 'large';
-                    translatedElement.style.fontWeight = getComputedStyle(titleLink).fontWeight;
-                    translatedElement.style.margin = '0';
-                    translatedElement.style.lineHeight = '1.1';
-
-                    // **创建翻译后的链接**
+                    // **创建翻译后的超链接**
                     const translatedLink = document.createElement('a');
                     translatedLink.href = titleUrl;
                     translatedLink.textContent = translatedText;
                     translatedLink.style.textDecoration = 'none';
+                    translatedLink.style.display = 'block';
+                    translatedLink.style.fontFamily = getComputedStyle(titleLink).fontFamily;
+                    translatedLink.style.fontSize = 'large';
+                    translatedLink.style.fontWeight = getComputedStyle(titleLink).fontWeight;
+                    translatedLink.style.margin = '0';
+                    translatedLink.style.lineHeight = '1.1';
+                    translatedLink.style.color = ''; // 让浏览器控制颜色
 
-                    // **继承英文标题的颜色**
-                    translatedLink.style.color = getComputedStyle(titleLink).color;
+                    // 添加 CSS 规则，确保 :visited 颜色
+                    const styleSheet = document.createElement('style');
+                    styleSheet.textContent = 'a:visited { color: purple !important; }';
+                    document.head.appendChild(styleSheet);
+
 
                     // **在新标签页打开翻译后的链接**
                     translatedLink.setAttribute('target', '_blank');
@@ -72,8 +77,7 @@
                         translatedLink.style.textDecoration = 'none';
                     });
 
-                    translatedElement.appendChild(translatedLink);
-                    titleElement.insertBefore(translatedElement, titleElement.firstChild);
+                    titleElement.insertBefore(translatedLink, titleElement.firstChild);
                 });
             }, 1000);
         }
