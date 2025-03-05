@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Scholar标题翻译（有道 & Google 选择）
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  将Google Scholar搜索结果标题翻译为中文，并在英文标题上一行显示（可选择使用有道或Google翻译）
 // @author       Pencilheart
 // @match        https://scholar.google.com/*
