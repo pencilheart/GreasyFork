@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Google Scholar标题翻译（有道 & Google & DeepL选择）
+// @name         Google Scholar标题翻译（有道 & Google & DeepL & CNKI选择）
 // @namespace    http://tampermonkey.net/
-// @version      1.4
-// @description  将Google Scholar搜索结果标题翻译为中文，并在英文标题上一行显示（可选择使用有道、Google或DeepL翻译）
+// @version      1.5
+// @description  将Google Scholar搜索结果标题翻译为中文，并在英文标题上一行显示（可选择使用有道、Google、DeepL或CNKI翻译）
 // @author       Pencilheart
 // @match        https://scholar.google.com/*
 // @grant        GM_xmlhttpRequest
@@ -13,8 +13,8 @@
 // @connect      translate.googleapis.com
 // @connect      deepl.com
 // @icon         data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBmaWxsPSJyZWQiIGQ9Ik0xMiAyMS4zNWwtMS40NS0xLjMyQzUuNCAxNS4zNiAyIDEyLjI4IDIgOC41IDIgNS40MiA0LjQyIDMgNy41IDNjMS43NCAwIDMuNDEuODEgNC41IDIuMDlDMTMuMDkgMy44MSAxNC43NiAzIDE2LjUgMyAxOS41OCAzIDIyIDUuNDIgMjIgOC41YzAgMy43OC0zLjQgNi44Ni04LjU1IDExLjU0TDEyIDIxLjM1eiIvPjwvc3ZnPg==
-// @downloadURL https://update.greasyfork.org/scripts/528747/Google%20Scholar%E6%A0%87%E9%A2%98%E7%BF%BB%E8%AF%91%EF%BC%88%E6%9C%89%E9%81%93%20%20Google%20%E9%80%89%E6%8B%A9%EF%BC%89.user.js
-// @updateURL https://update.greasyfork.org/scripts/528747/Google%20Scholar%E6%A0%87%E9%A2%98%E7%BF%BB%E8%AF%91%EF%BC%88%E6%9C%89%E9%81%93%20%20Google%20%E9%80%89%E6%8B%A9%EF%BC%89.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/528747/Google%20Scholar%E6%A0%87%E9%A2%98%E7%BF%BB%E8%AF%91%EF%BC%88%E6%9C%89%E9%81%93%20%20Google%20%20DeepL%E9%80%89%E6%8B%A9%EF%BC%89.user.js
+// @updateURL https://update.greasyfork.org/scripts/528747/Google%20Scholar%E6%A0%87%E9%A2%98%E7%BF%BB%E8%AF%91%EF%BC%88%E6%9C%89%E9%81%93%20%20Google%20%20DeepL%E9%80%89%E6%8B%A9%EF%BC%89.meta.js
 // ==/UserScript==
 
 (function() {
@@ -34,6 +34,11 @@
 
     GM_registerMenuCommand("使用DeepL翻译", () => {
         GM_setValue('translationService', 'deepl');
+        location.reload();
+    });
+
+    GM_registerMenuCommand("使用CNKI翻译", () => {
+        GM_setValue('translationService', 'cnki');
         location.reload();
     });
 
@@ -131,7 +136,7 @@
                     callback('翻译失败');
                 }
             });
-        } else {
+        } else if (service === 'youdao') {
             const url = `https://dict.youdao.com/search?q=${encodeURIComponent(text)}&keyfrom=fanyi.smartResult`;
             GM_xmlhttpRequest({
                 method: 'GET',
@@ -150,6 +155,28 @@
                 },
                 onerror: function() {
                     console.error('有道翻译请求失败');
+                    callback('翻译失败');
+                }
+            });
+        } else if (service === 'cnki') {
+            const url = `https://kns.cnki.net/kns/brief/Default_Result.aspx?dbprefix=CDFD&q=${encodeURIComponent(text)}`;
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: url,
+                onload: function(response) {
+                    try {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(response.responseText, 'text/html');
+                        const translationElement = doc.querySelector('.fanyi_result_class'); // 需要根据实际页面结构修改
+                        const translatedText = translationElement ? translationElement.textContent.trim() : '翻译失败';
+                        callback(translatedText);
+                    } catch (e) {
+                        console.error('CNKI翻译解析失败:', e);
+                        callback('翻译失败');
+                    }
+                },
+                onerror: function() {
+                    console.error('CNKI翻译请求失败');
                     callback('翻译失败');
                 }
             });
